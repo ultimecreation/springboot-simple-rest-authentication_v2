@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,20 +41,19 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PreAuthorize("hasAnyRole('ROLE_CLIENT')")
-    @GetMapping("/profile")
-    public ResponseEntity<Object> profile(Authentication authentication, HttpServletRequest request) {
-        // if (request.isUserInRole("ROLE_Client")) {
-        // System.out.println("//////////////////////////");
-        // System.out.println("REQUEST TEST");
-        // }
+    @GetMapping("/profile/{id}")
+    @PreAuthorize("#id == authentication.principal.id || hasAnyRole('CLIENT')")
+    public ResponseEntity<Object> profile(@PathVariable int id,
+            Authentication authentication,
+            HttpServletRequest request) {
+        var userId = ((AppUser) authentication.getPrincipal()).getId();
 
         var response = new HashMap<String, Object>();
         response.put("Username", authentication.getName());
         response.put("authorities", authentication.getAuthorities());
+        response.put("userId", userId);
+        // var appUser = appUserRepository.findByEmail(authentication.getName());
 
-        var appUser = appUserRepository.findByEmail(authentication.getName());
-        response.put("user", appUser);
         return ResponseEntity.ok(response);
     }
 
@@ -135,24 +135,4 @@ public class AuthController {
 
         return ResponseEntity.badRequest().body("Bad credentials");
     }
-
-    // private String createJwtToken(AppUser appUser) {
-    // Instant now = Instant.now();
-
-    // JwtClaimsSet claims = JwtClaimsSet.builder()
-    // .issuer(jwtIssuer)
-    // .issuedAt(now)
-    // .expiresAt(now.plusSeconds(24 * 3600))
-    // .subject(appUser.getUsername())
-    // .claim("role", appUser.getRole())
-    // .build();
-
-    // var encoder = new NimbusJwtEncoder(new
-    // ImmutableSecret<>(jwtSecretKey.getBytes()));
-    // var params =
-    // JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(),
-    // claims);
-
-    // return encoder.encode(params).getTokenValue();
-
 }

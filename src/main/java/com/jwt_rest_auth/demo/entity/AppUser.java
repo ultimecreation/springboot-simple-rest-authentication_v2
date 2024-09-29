@@ -1,12 +1,16 @@
 package com.jwt_rest_auth.demo.entity;
 
+import java.util.Collection;
 import java.util.Date;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class AppUser {
+public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,6 +72,11 @@ public class AppUser {
 
     public void setRole(String Role) {
         this.Role = Role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.createAuthorityList("ROLE_" + this.getRole());
     }
 
 }
