@@ -1,4 +1,4 @@
-# springboot-simple-rest-authentication
+# springboot-simple-rest-authentication v2
 
 ## Packages
 
