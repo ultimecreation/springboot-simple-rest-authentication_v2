@@ -2,59 +2,35 @@ package com.jwt_rest_auth.demo.dto;
 
 import java.sql.Date;
 
-import jakarta.validation.constraints.NotEmpty;
+import org.springframework.data.annotation.Transient;
 
+import com.jwt_rest_auth.demo.validation.FieldMatch;
+import com.jwt_rest_auth.demo.validation.UniqueEmailConstraint;
+
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
+
+@Data
+@FieldMatch(first = "password", second = "confirmPassword", message = "Password and Confirm Password do not match")
 public class RegisterDto {
 
     @NotEmpty
     private String username;
+
     @NotEmpty
+    @UniqueEmailConstraint
     private String email;
-    @NotEmpty
+
+    @NotEmpty(message = "password is required")
     private String password;
+
+    @Transient
+
+    @NotEmpty(message = "password Confirmation is required")
+    private String confirmPassword;
 
     private String Role;
 
     private Date createdAt;
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return this.Role;
-    }
-
-    public void setRole(String Role) {
-        this.Role = Role;
-    }
-
-    public Date getCreatedAt() {
-        return this.createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
 
 }

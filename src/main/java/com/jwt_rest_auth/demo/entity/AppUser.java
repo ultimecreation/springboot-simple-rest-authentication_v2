@@ -6,7 +6,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.jwt_rest_auth.demo.validation.FieldMatch;
+import com.jwt_rest_auth.demo.validation.UniqueEmailConstraint;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
 @Entity
 @Table(name = "users")
@@ -23,8 +28,14 @@ public class AppUser implements UserDetails {
     private String email;
 
     private String password;
+
     private Date createdAt;
     private String Role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.createAuthorityList("ROLE_" + this.getRole());
+    }
 
     public int getId() {
         return this.id;
@@ -72,11 +83,6 @@ public class AppUser implements UserDetails {
 
     public void setRole(String Role) {
         this.Role = Role;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList("ROLE_" + this.getRole());
     }
 
 }

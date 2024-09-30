@@ -46,13 +46,13 @@ public class AuthController {
     public ResponseEntity<Object> profile(@PathVariable int id,
             Authentication authentication,
             HttpServletRequest request) {
-        var userId = ((AppUser) authentication.getPrincipal()).getId();
+        var user = ((AppUser) authentication.getPrincipal());
+        var appUser = appUserRepository.findByEmail(user.getEmail());
 
         var response = new HashMap<String, Object>();
         response.put("Username", authentication.getName());
         response.put("authorities", authentication.getAuthorities());
-        response.put("userId", userId);
-        // var appUser = appUserRepository.findByEmail(authentication.getName());
+        response.put("user", appUser);
 
         return ResponseEntity.ok(response);
     }
@@ -80,11 +80,6 @@ public class AuthController {
         appUser.setCreatedAt(new Date());
 
         try {
-
-            var emailExists = appUserRepository.findByEmail(registerDto.getEmail());
-            if (emailExists != null) {
-                return ResponseEntity.badRequest().body("Email already in use");
-            }
 
             appUserRepository.save(appUser);
 
