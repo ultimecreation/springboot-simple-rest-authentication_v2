@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.jwt_rest_auth.demo.entity.AppUser;
 import com.jwt_rest_auth.demo.repository.AppUserRepository;
 
 @Service
