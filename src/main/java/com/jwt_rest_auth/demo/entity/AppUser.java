@@ -6,12 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.jwt_rest_auth.demo.validation.FieldMatch;
-import com.jwt_rest_auth.demo.validation.UniqueEmailConstraint;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
 
 @Entity
 @Table(name = "users")

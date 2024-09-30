@@ -14,10 +14,10 @@ import lombok.Data;
 @FieldMatch(first = "password", second = "confirmPassword", message = "Password and Confirm Password do not match")
 public class RegisterDto {
 
-    @NotEmpty
+    @NotEmpty(message = "username is required")
     private String username;
 
-    @NotEmpty
+    @NotEmpty(message = "email is required")
     @UniqueEmailConstraint
     private String email;
 
@@ -25,12 +25,8 @@ public class RegisterDto {
     private String password;
 
     @Transient
-
     @NotEmpty(message = "password Confirmation is required")
     private String confirmPassword;
 
     private String Role;
-
-    private Date createdAt;
-
 }

@@ -120,7 +120,7 @@ public class AuthController {
 
             var response = new HashMap<String, Object>();
             response.put("token", jwtToken);
-            response.put("user", appUser);
+            // response.put("user", appUser.getId());
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
